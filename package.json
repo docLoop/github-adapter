@@ -1,0 +1,36 @@
+{
+  "name": "docloop-github-adapter",
+  "version": "0.9.0",
+  "description": "Docloop target adapter to interact with the github issue tracker",
+  "main": "github-adapter.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/docLoop/backend.git"
+  },
+  "keywords": [
+    "docloop",
+    "gihub"
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "author": "Andreas Pittrich",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/docLoop/backend/issues"
+  },
+  "homepage": "https://github.com/docLoop/backend#readme",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "docloop": "^0.9.0",
+    "github-app": "^3.2.0",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies":{
+    "docloop": "file:../../base"
+  }
+}
