@@ -11,7 +11,7 @@ Install like this:
 Before you can actually use the GithubAdapter, you will have to register a [GithubApp](https://developer.github.com/apps/).
 Each installation of the GithubApp needs acces to issues. 
 
-Use the credential from yor app's configuration page to configure your GithubAdapter like this (see [docloop](https://github.com/docloop/core)):
+Use the credentials from your app's configuration page to configure your GithubAdapter like this (see [docloop](https://github.com/docloop/core)):
 
 
 ```javascript
