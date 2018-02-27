@@ -1,6 +1,8 @@
 {
   "name": "docloop-github-adapter",
   "version": "0.9.0",
+  "author": "Andreas Pittrich",
+  "license": "GPL-3.0",
   "description": "Docloop target adapter to interact with the github issue tracker",
   "main": "github-adapter.js",
   "scripts": {
@@ -31,6 +33,6 @@
     "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
-    "docloop": "file:../core"
+    "mocha": "^3.5.3"
   }
 }
