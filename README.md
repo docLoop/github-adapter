@@ -26,7 +26,6 @@ docloopCore
                         privateKeyLocation: "my_secret.private-key.pem",
                         installationLink:   "link_to_my_github_app",
                       },
-
     extraEndpoints:   false,
     eventQueue:       {
                         delay:            [0, 1000, 5000],
