@@ -15,10 +15,13 @@ const	docloop				=	require('docloop'),
 		Promise				=	require('bluebird')
 
 
+//TODO: description! TODO: throw Errors when misconfigured.
+//
 /**
- * TODO: description! TODO: throw Errors when misconfigured.
  * 
  * @module  githubAdapter
+ * @license GPL-3.0
+ * 
  */
 
 
@@ -32,9 +35,10 @@ const	docloop				=	require('docloop'),
  *
  * The following arguments and properties are on top of the arguments and properties of {@link DocloopAdapter}.
  *
- * @memberOf  	module:githubAdapter 
+ * @alias		GithubAdapter
+ * @memberof  	module:githubAdapter 
  * 
- * @extends 	{module:docloop.DocloopAdapter}
+ * @extends 	DocloopAdapter
  *
  * @param		{DocloopCore}			 core
  * @param 		{Object}				 config
@@ -47,8 +51,7 @@ const	docloop				=	require('docloop'),
  * 
  * @property 	{String} 				endpointDefaultConfig.label 	Name of the label to tag a new issue with
  * @property	{GithubUser}			githubUser						API wrapper for github user interaction
- * @property	{GithubAPP}				githubApp						API wrapper for github app interaction
- * @property	{Object}				oAuth							
+ * @property	{GithubApp}				githubApp						API wrapper for github app interaction
  * @property	{Collection}			events							Mongo-db collection for stored events
  * @property	{EventQueue}			eventQueue						The event queue the event is stored in
  * @property	{Object}				oAuth							OAuth credentials has provided.
@@ -204,11 +207,17 @@ class GithubAdapter extends DocloopAdapter{
 	 * Handle request sent by github after successful authorization. 
 	 * Uses the app config data and posted code to gain access token from github and store it in session data for later use.
 	 * If successful redirects back to the configured front end url.
+	 *
+	 * @route	{GET}	/adapters/github/oauth/callback
+	 * 
 	 * @async
+	 * 
 	 * @param  {Object}	req		Express request object			
 	 * @param  {Object}	res		Express result object
+	 * 
 	 * @throws {DocloopError} 	If not successful
-	 * @return {undefined}
+	 * 
+	 * @return undefined
 	 */
 	async handleOAuthCallback(req, res){
 

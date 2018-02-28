@@ -7,6 +7,7 @@ const 	GithubApi		=	require('github'),
  * Class representing minimal Github API wrapper for user interaction.
  *
  * @memberOf  	module:githubAdapter
+ * @alias		GithubUser
  *
  * @property	github			Instance of GitHubApi (TODO: add link) 
  */

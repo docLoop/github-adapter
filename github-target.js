@@ -7,7 +7,8 @@ const	DocloopEndpoint	=	require('docloop').DocloopEndpoint,
  *Class representing the Github issue tracker.
  *
  * @memberof	module:githubAdapter
- *
+ * @alias		GithubTarget
+ * 
  * @extends		DocloopEndpoint
  *
  * @throws		{TODO}					TODO

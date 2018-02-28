@@ -8,6 +8,7 @@ const	createApp 	=	require('github-app'),
  * Class representing minimal Github API wrapper for app interaction.
  *
  * @memberof  	module:githubAdapter
+ * @alias		GithubApp
  * 
  * @param		{Object}		config
  * @param		{String}		config.id		GithubApp Id
