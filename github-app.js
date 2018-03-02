@@ -59,6 +59,8 @@ class GithubApp {
 	 */
 	async createOrUpdateIssue(target_identifier, issue){
 
+		console.log('creating/upadting issue', issue.title, Date.now())
+
 		var params 			= 	{ 
 									owner:	target_identifier.owner,
 									repo:	target_identifier.repo,
@@ -72,6 +74,8 @@ class GithubApp {
 								?	await github.issues.edit( params ) 
 								:	await github.issues.create( params ) 
 
+		console.log('done', issue.title)
+
 		return result.data.number
 	}
 
@@ -83,6 +87,9 @@ class GithubApp {
 	 * @return {String}								The github comment number
 	 */
 	async createOrUpdateComment(target_identifier, comment){
+
+		console.log('creating/upadting comment', Date.now())
+
 
 		var params			=	{
 									owner:		target_identifier.owner,

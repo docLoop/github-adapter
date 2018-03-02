@@ -90,6 +90,8 @@ class GithubAdapter extends DocloopAdapter{
 								cert: config.app.privateKey || fs.readFileSync(config.app.privateKeyLocation)
 							})
 		this.oAuth		=	config.oAuth
+		this.dummy		=	config.dummy
+
 
 		docloop.serializeCalls(this, [
 			'handleQueuedAnnotationEvent',
@@ -124,6 +126,9 @@ class GithubAdapter extends DocloopAdapter{
 																}
 														}) 
 
+
+							console.log(this.eventQueue)
+
 							this.eventQueue.on('annotation-fail', 		queued_event 	=> this.logAnnotationFailedEvent(queued_event) )
 							this.eventQueue.on('annotation-done', 		queued_event 	=> this.logAnnotationDoneEvent(queued_event) )
 							this.eventQueue.on('annotation-attempt', 	queued_event 	=> this.handleQueuedAnnotationEvent(queued_event) ) 
@@ -134,6 +139,8 @@ class GithubAdapter extends DocloopAdapter{
 							this.eventQueue.on('reply-attempt', 		queued_event 	=> this.handleQueuedReplyEvent(queued_event) ) 
 
 						})
+
+		//TODO: Remove queued events when link is removed
 
 		//TODO:Add config to targets
 

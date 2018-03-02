@@ -173,6 +173,8 @@ class GithubTarget extends DocloopEndpoint{
 	 */
 	async handleAnnotation(annotation){
 
+		console.log(new Date().toString(), 'Trying to handle annotation: ', annotation.title, annotation.id)
+
 		var issue_number 	= 	await this.getIssueNumber(annotation.id),
 			issue			= 	{
 									...this.annotation2Issue(annotation),
@@ -238,8 +240,8 @@ class GithubTarget extends DocloopEndpoint{
 								||	await 	this.adapter.githubApp.createOrUpdateIssue(
 												this.identifier,
 												{ 
-													title: 	this.adapter.config.dummy.title, 
-													body: 	this.adapter.config.body,
+													title: 	this.adapter.dummy.title, 
+													body: 	this.adapter.body,
 
 												}
 											)
@@ -282,7 +284,8 @@ class GithubTarget extends DocloopEndpoint{
 	 */
 	async handleReply(reply){
 
-		console.log('parentId', reply.parentId)
+		console.log(new Date().toString(), 'Trying to handle annotation: ', reply.parentId, reply.id)
+		
 
 		var issue_number 	= 	await this.ensureIssueNumber(reply.parentId),
 			comment			= 	{
