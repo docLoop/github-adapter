@@ -20,7 +20,7 @@ class GithubUser {
 		this.github = new GithubApi()
 
 		cacheCalls(this, 'get'				, 2000)
-		cacheCalls(this, 'getInstallations'	, 2000)
+		cacheCalls(this, 'getInstallations'	, 10000)
 
 	}
 
@@ -54,7 +54,7 @@ class GithubUser {
 	/**
 	 * Get data for all installations granted access to by provided access token.
 	 *
-	 * This method is augumented by {@link module:docloop#cache}(2000) return value will be cached for 2 seconds in order to prevent huge numbers of API calls.
+	 * This method is augumented by {@link module:docloop#cache}(10000) return value will be cached for 2 seconds in order to prevent huge numbers of API calls.
 	 * 
 	 * @param  {String}		token		Github user access token
 	 * @return {Object[]}				Installation id of each accessible installation
