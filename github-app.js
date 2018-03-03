@@ -59,7 +59,7 @@ class GithubApp {
 	 */
 	async createOrUpdateIssue(target_identifier, issue){
 
-		console.log('creating/upadting issue', issue.title, Date.now())
+		console.log('creating/upadating issue', issue.title, Date.now())
 
 		var params 			= 	{ 
 									owner:	target_identifier.owner,

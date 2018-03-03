@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/docLoop/backend.git"
+    "url": "git+https://github.com/docloop/backend.git"
   },
   "keywords": [
     "docloop",
@@ -20,9 +20,9 @@
     "test": "test"
   },
   "bugs": {
-    "url": "https://github.com/docLoop/backend/issues"
+    "url": "https://github.com/docloop/github-adapter/issues"
   },
-  "homepage": "https://github.com/docLoop/backend#readme",
+  "homepage": "https://github.com/docLloop/github-adapter#readme",
   "dependencies": {
     "bluebird": "^3.5.1",
     "docloop": "^0.9.0",
