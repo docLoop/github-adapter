@@ -138,6 +138,8 @@ class GithubAdapter extends DocloopAdapter{
 
 							this.eventQueue.on('reply-attempt', 		queued_event 	=> this.handleQueuedReplyEvent(queued_event) ) 
 
+							this.eventQueue.start()
+
 						})
 
 		//TODO: Remove queued events when link is removed
@@ -354,6 +356,7 @@ class GithubAdapter extends DocloopAdapter{
 		}
 		catch(e){
 			console.error(e)
+			throw(e)
 		}
 		queued_event.checkOff()
 

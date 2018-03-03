@@ -1,7 +1,8 @@
 'use strict'
 
-const	createApp 	=	require('github-app'),
-		cacheCalls	=	require('docloop').cacheCalls
+const	createApp 		=	require('github-app'),
+		cacheCalls		=	require('docloop').cacheCalls,
+		serializeCalls	=	require('docloop').serializeCalls
 
 
 /**
@@ -20,10 +21,17 @@ const	createApp 	=	require('github-app'),
 class GithubApp {
 
 	//TODO: Multiple pages!
+	//
+	//TODO: test rate limit
 
 	constructor(config){
 		this.app = 	createApp(config)
+
+		//TODO: better use webwooks and reloads no need for cache:
 		cacheCalls(this, 'getRepositories', 2000)
+
+
+		serializeCalls(this, ['createOrUpdateIssue', 'createOrUpdateComment'], 3000)
 	}
 
 	/**
