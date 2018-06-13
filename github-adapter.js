@@ -351,13 +351,8 @@ class GithubAdapter extends DocloopAdapter{
 
 		var target	= await this.getStoredEndpoint(target_id)
 
-		try{
-			await target.handleReply(reply)
-		}
-		catch(e){
-			console.error(e)
-			throw(e)
-		}
+		await target.handleReply(reply)
+
 		queued_event.checkOff()
 
 	}

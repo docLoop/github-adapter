@@ -24,9 +24,11 @@
   },
   "homepage": "https://github.com/docLloop/github-adapter#readme",
   "dependencies": {
+    "@octokit/rest": "^15.8.2",
     "bluebird": "^3.5.1",
     "docloop": "^0.9.0",
     "github-app": "^3.2.0",
+    "jsonwebtoken": "^8.3.0",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5"
   },

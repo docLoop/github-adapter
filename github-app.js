@@ -1,8 +1,27 @@
 'use strict'
 
-const	createApp 		=	require('github-app'),
+const	jwt 			= 	require('jsonwebtoken'),
+		Octokit			= 	require('@octokit/rest'),
 		cacheCalls		=	require('docloop').cacheCalls,
 		serializeCalls	=	require('docloop').serializeCalls
+
+
+
+
+
+
+function generateJwt (id, cert) {
+    const payload = {
+      iat: Math.floor(new Date() / 1000),       
+      exp: Math.floor(new Date() / 1000) + 60,  
+      iss: id                                   
+    }
+
+    // Sign with RSA SHA256
+    return jwt.sign(payload, cert, {algorithm: 'RS256'})
+}
+
+
 
 
 /**
@@ -24,8 +43,16 @@ class GithubApp {
 	//
 	//TODO: test rate limit
 
+
+
+	//TOSO: store installation tokens for some time and reuse them
+	
 	constructor(config){
-		this.app = 	createApp(config)
+		this.id 		= config.id
+		this.cert 		= config.cert
+
+		this.octokit	= new Octokit()
+
 
 		//TODO: better use webwooks and reloads no need for cache:
 		cacheCalls(this, 'getRepositories', 2000)
@@ -33,6 +60,28 @@ class GithubApp {
 
 		serializeCalls(this, ['createOrUpdateIssue', 'createOrUpdateComment'], 3000)
 	}
+
+
+
+
+	async authenticateAsApp(){
+	    this.octokit.authenticate({type: 'app', token: generateJwt(this.id, this.cert)})
+	}
+
+
+	async authenticateAsInstallation(installation_id){
+
+		//TODO: cache tokens!
+
+		await this.authenticateAsApp()
+
+		var response = await this.octokit.apps.createInstallationToken({installation_id: installation_id})
+
+		this.octokit.authenticate({type: 'token', token: response.data.token})
+	}
+
+
+
 
 	/**
 	 * Get all repositories the installation has access to.
@@ -44,9 +93,18 @@ class GithubApp {
 	 */
 	async getRepositories(installation_id){
 
-		var github 	= await this.app.asInstallation(installation_id),
-			result	= await github.apps.getInstallationRepositories({}),
-			repos	= result.data.repositories || []
+		await this.authenticateAsInstallation(installation_id)
+
+
+		var	response	= await this.octokit.apps.getInstallationRepositories({per_page: 100}),
+			repos		= response.data.repositories || []
+
+
+
+		while(this.octokit.hasNextPage(response)){
+			response 	= 	await this.octokit.getNextPage(response),
+			repos		=	repos.concat(response.data.repositories)
+		}
 
 
 		return 	repos.map( repository => ({
@@ -69,6 +127,8 @@ class GithubApp {
 
 		console.log('creating/upadating issue', issue.title, Date.now())
 
+		await this.authenticateAsInstallation(target_identifier.installation_id)
+
 		var params 			= 	{ 
 									owner:	target_identifier.owner,
 									repo:	target_identifier.repo,
@@ -77,10 +137,9 @@ class GithubApp {
 									body:	issue.body,
 									labels:	issue.labels
 								},
-			github 			= 	await this.app.asInstallation(target_identifier.installation_id),
 			result 			=	issue.number 
-								?	await github.issues.edit( params ) 
-								:	await github.issues.create( params ) 
+								?	await this.octokit.issues.edit( params ) 
+								:	await this.octokit.issues.create( params ) 
 
 		console.log('done', issue.title)
 
@@ -98,6 +157,7 @@ class GithubApp {
 
 		console.log('creating/upadting comment', Date.now())
 
+		await this.authenticateAsInstallation(target_identifier.installation_id)
 
 		var params			=	{
 									owner:		target_identifier.owner,
@@ -106,10 +166,9 @@ class GithubApp {
 									body:		comment.body,
 									id:			comment.id
 								},
-			github 			= 	await this.app.asInstallation(target_identifier.installation_id),
 			result			=	comment.id	
-								?	await github.issues.editComment( params )
-								:	await github.issues.createComment( params )
+								?	await this.octokit.issues.editComment( params )
+								:	await this.octokit.issues.createComment( params )
 			
 		return result.data.id //todo?		
 	}
