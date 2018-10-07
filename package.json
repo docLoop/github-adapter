@@ -26,7 +26,7 @@
   "dependencies": {
     "@octokit/rest": "^15.13.0",
     "bluebird": "^3.5.2",
-    "docloop": "^0.9.5",
+    "docloop": "^1.0.0",
     "jsonwebtoken": "^8.3.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
