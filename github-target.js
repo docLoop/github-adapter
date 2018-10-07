@@ -148,7 +148,7 @@ class GithubTarget extends DocloopEndpoint{
 									+ '<blockquote>\n'
 									+ annotation.body+'\n'
 									+ '</blockquote>'+'\n\n',
-			footer_line			=	'_Link to <a href = "'+annotation.original+'">orginial comment</a>. About <a href ="'+this.adapter.core.config.home+'">docLoop</a>._',
+			footer_line			=	'_Link to <a href = "'+annotation.original+'">original comment</a>. About <a href ="'+this.adapter.core.config.home+'">docloop</a>._',
 			
 			body				=	  import_line 
 									+ target_block 

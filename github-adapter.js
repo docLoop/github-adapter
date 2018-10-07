@@ -323,6 +323,8 @@ class GithubAdapter extends DocloopAdapter{
 
 	async handleQueuedAnnotationEvent(queued_event){
 
+		console.log('handleQueuedAnnotationEvent')
+
 		//Todo: nur ztum testen:
 		var event		= queued_event.event || queued_event,
 			annotation	= event.annotation,
