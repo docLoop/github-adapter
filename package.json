@@ -24,14 +24,14 @@
   },
   "homepage": "https://github.com/docLloop/github-adapter#readme",
   "dependencies": {
-    "@octokit/rest": "^15.13.0",
-    "bluebird": "^3.5.2",
-    "docloop": "^1.0.0",
-    "jsonwebtoken": "^8.3.0",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "@octokit/rest": "^18.0.4",
+    "bluebird": "^3.7.2",
+    "docloop": "^1.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.9"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^8.1.2"
   }
 }
