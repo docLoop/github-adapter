@@ -1,7 +1,7 @@
 'use strict'
 
 const	jwt 			= 	require('jsonwebtoken'),
-		Octokit			= 	require('@octokit/rest'),
+		{Octokit}		= 	require('@octokit/rest'),
 		cacheCalls		=	require('docloop').cacheCalls,
 		serializeCalls	=	require('docloop').serializeCalls
 
