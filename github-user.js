@@ -15,7 +15,6 @@ const 	{Octokit} 		= 	require('@octokit/rest'),
 class GithubUser {
 
 	constructor(){
-		this.octokit = new Octokit()
 
 		cacheCalls(this, 'get'				, 2000)
 		cacheCalls(this, 'getInstallations'	, 2000)
@@ -38,12 +37,9 @@ class GithubUser {
 
 		if(typeof token != 'string') throw TypeError('GithubUser.get() token must be a string; got:' +token)
 
-		this.octokit.authenticate({
-			type: 'token',
-			token: token
-		})
+		const octokit = new Octokit(token)
 
-		var result = await	this.octokit.users.get({})
+		var result = await	octokit.users.get({})
 
 		return result.data	
 	}
@@ -61,14 +57,14 @@ class GithubUser {
 
 		if(typeof token != 'string') throw TypeError('GithubUser.getInstallations() token must be a string; got: ' +token)
 
-		this.octokit.authenticate( { type: 'oauth', token: token } )
+		const octokit = new Octokit(token)
 
 
-		var response 		= 	await this.octokit.users.getInstallations({per_page: 100}),
+		var response 		= 	await octokit.users.getInstallations({per_page: 100}),
 			installations	=	response.data.installations || []
 
 		while(this.octokit.hasNextPage(response)){
-			response 		= 	await this.octokit.getNextPage(response),
+			response 		= 	await octokit.getNextPage(response),
 			installations	=	installations.concat(response.data.installations)
 		}
 
