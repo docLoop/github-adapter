@@ -1,6 +1,6 @@
 {
   "name": "docloop-github-adapter",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Andreas Pittrich",
   "license": "GPL-3.0",
   "description": "Docloop target adapter to interact with the github issue tracker",
