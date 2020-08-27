@@ -230,6 +230,7 @@ class GithubAdapter extends DocloopAdapter{
 	 */
 	async handleOAuthCallback(req, res){
 
+
 		var session_data	=	this._clearSessionData(req.session),
 			json 			= 	{
 									client_id: 		this.oAuth.clientId,
@@ -240,12 +241,15 @@ class GithubAdapter extends DocloopAdapter{
 
 			data			=	await request( {method: 'post', uri, json} )
 			
+
 		if(data && data.access_token){
 			session_data.access_token = data.access_token
 			res.redirect(this.core.config.clientUrl)
 		} else{
 			throw new DocloopError("GithubAdapter.handleOAuthCallback: unable to get access token", 403)
 		}
+
+
 	}
 
 	/**
@@ -264,6 +268,7 @@ class GithubAdapter extends DocloopAdapter{
 			user = await this.githubUser.get(access_token)	
 		} 
 		catch(e) {	
+			console.log(e)
 			user = undefined
 			//it's alright if this doesn't work, worst case: we dont get a user name, but then that is exactly what this method is supposed to report. 	
 		}

@@ -37,9 +37,13 @@ class GithubUser {
 
 		if(typeof token != 'string') throw TypeError('GithubUser.get() token must be a string; got:' +token)
 
-		const octokit = new Octokit(token)
 
-		var result = await	octokit.users.get({})
+		console.log(token)
+
+		const octokit = new Octokit({auth:token})
+
+		var result = await	octokit.users.getAuthenticated()
+
 
 		return result.data	
 	}
@@ -57,20 +61,29 @@ class GithubUser {
 
 		if(typeof token != 'string') throw TypeError('GithubUser.getInstallations() token must be a string; got: ' +token)
 
-		const octokit = new Octokit(token)
+		const octokit = new Octokit({auth:token})
 
 
-		var response 		= 	await octokit.users.getInstallations({per_page: 100}),
+		var response 		= 	await octokit.apps.listInstallationsForAuthenticatedUser({per_page: 100}),
 			installations	=	response.data.installations || []
 
-		while(this.octokit.hasNextPage(response)){
-			response 		= 	await octokit.getNextPage(response),
-			installations	=	installations.concat(response.data.installations)
-		}
 
+		//TODO: handle more than 100 installations...
 
 		return installations.map(installation => installation.id)
 	}
+
+	// async getRepositories(token){
+	// 	if(typeof token != 'string') throw TypeError('GithubUser.getIRepositories() token must be a string; got: ' +token)
+
+	// 	const octokit = new Octokit({auth:token})
+
+	// 	var response 		= 	await octokit.repos.listForAuthenticatedUser({per_page: 100})
+
+	// 	console.log(response)
+
+	// 	return []
+	// }
 
 
 }

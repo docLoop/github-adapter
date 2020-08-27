@@ -51,8 +51,6 @@ class GithubApp {
 		this.id 		= config.id
 		this.cert 		= config.cert
 
-		this.octokit	= new Octokit()
-
 
 		//TODO: better use webwooks and reloads no need for cache:
 		cacheCalls(this, 'getRepositories', 2000)
@@ -65,19 +63,18 @@ class GithubApp {
 
 
 	async authenticateAsApp(){
-	    this.octokit.authenticate({type: 'app', token: generateJwt(this.id, this.cert)})
+		const octokit	= new Octokit({auth: generateJwt(this.id, this.cert)})
+	    return octokit
 	}
 
 
 	async authenticateAsInstallation(installation_id){
 
-		//TODO: cache tokens!
+		const octokit = await this.authenticateAsApp()
 
-		await this.authenticateAsApp()
+		const response = await octokit.apps.createInstallationAccessToken({installation_id})
 
-		var response = await this.octokit.apps.createInstallationToken({installation_id: installation_id})
-
-		this.octokit.authenticate({type: 'token', token: response.data.token})
+		return new Octokit({auth: response.data.token}) 
 	}
 
 
@@ -93,19 +90,14 @@ class GithubApp {
 	 */
 	async getRepositories(installation_id){
 
-		await this.authenticateAsInstallation(installation_id)
+		const octokit = await this.authenticateAsInstallation(installation_id)
 
 
-		var	response	= await this.octokit.apps.getInstallationRepositories({per_page: 100}),
+		var	response	= await octokit.apps.listReposAccessibleToInstallation({per_page: 100}),
 			repos		= response.data.repositories || []
 
 
-
-		while(this.octokit.hasNextPage(response)){
-			response 	= 	await this.octokit.getNextPage(response),
-			repos		=	repos.concat(response.data.repositories)
-		}
-
+		//TODO: HANDLE MORE THAN 100 PAGES
 
 		return 	repos.map( repository => ({
 					name:				repository.name,
@@ -127,7 +119,7 @@ class GithubApp {
 
 		console.log('creating/upadating issue', issue.title, Date.now())
 
-		await this.authenticateAsInstallation(target_identifier.installation_id)
+		const octokit = await this.authenticateAsInstallation(target_identifier.installation_id)
 
 		var params 			= 	{ 
 									owner:	target_identifier.owner,
@@ -138,8 +130,8 @@ class GithubApp {
 									labels:	issue.labels
 								},
 			result 			=	issue.number 
-								?	await this.octokit.issues.edit( params ) 
-								:	await this.octokit.issues.create( params ) 
+								?	await octokit.issues.update( params ) 
+								:	await octokit.issues.create( params ) 
 
 		console.log('done', issue.title)
 
@@ -155,9 +147,9 @@ class GithubApp {
 	 */
 	async createOrUpdateComment(target_identifier, comment){
 
-		console.log('creating/upadting comment', Date.now())
+		console.log('creating/updating comment', Date.now())
 
-		await this.authenticateAsInstallation(target_identifier.installation_id)
+		const octokit = await this.authenticateAsInstallation(target_identifier.installation_id)
 
 		var params			=	{
 									owner:		target_identifier.owner,
@@ -167,8 +159,8 @@ class GithubApp {
 									id:			comment.id
 								},
 			result			=	comment.id	
-								?	await this.octokit.issues.editComment( params )
-								:	await this.octokit.issues.createComment( params )
+								?	await octokit.issues.updateComment( params )
+								:	await octokit.issues.createComment( params )
 			
 		return result.data.id //todo?		
 	}
